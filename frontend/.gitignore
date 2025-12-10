@@ -1,0 +1,22 @@
+# Build output
+/dist/
+config/dist/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Avoid committing compiled JS if ever emitted to src by mistake
+# Note: cleanup step removes only files with a matching .ts sibling
+src/**/*.js
+src/**/*.js.map
+# Keep authored .d.ts by default; we do NOT ignore them globally here.
+# src/**/*.d.ts
+# src/**/*.d.ts.map
+
+# Node
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

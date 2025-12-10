@@ -1,0 +1,45 @@
+services:
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./frontend/src:/app/src          # Código fuente vivo
+      - frontend_dist:/app/dist          # Dist compilado compartido con Nginx
+    depends_on:
+      - backend
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: docker/Dockerfile
+    expose:
+      - "3000"
+    env_file:
+      - ./backend/config/.env
+    volumes:
+      - backend_data:/app/data
+      - backend_uploads:/app/uploads
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./frontend/website:/usr/share/nginx/html:ro
+      - frontend_dist:/usr/share/nginx/html:ro
+      - backend_uploads:/app/uploads
+    depends_on:
+      - backend
+      - frontend
+
+volumes:
+  backend_data:
+    driver: local
+  backend_uploads:
+    driver: local
+  frontend_dist:
+    driver: local
